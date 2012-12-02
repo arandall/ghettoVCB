@@ -5,7 +5,7 @@
 ##################################################################
 
 # directory that all VM backups should go (e.g. /vmfs/volumes/SAN_LUN1/mybackupdir)
-VM_BACKUP_VOLUME=/vmfs/volumes/dlgCore-NFS-bigboi.VM-Backups/WILLIAM_BACKUPS
+VM_BACKUP_VOLUME=/vmfs/volumes/backup/servers/`hostname -f`
 
 # Format output of VMDK backup
 # zeroedthick
@@ -58,16 +58,16 @@ ENABLE_NON_PERSISTENT_NFS=0
 UNMOUNT_NFS=0
 
 # IP Address of NFS Server
-NFS_SERVER=172.51.0.192
+NFS_SERVER=10.3.0.37
 
 # Path of exported folder residing on NFS Server (e.g. /some/mount/point )
-NFS_MOUNT=/upload
+NFS_MOUNT=/mnt/raid/backups/esxi
 
 # Non-persistent NFS datastore display name of choice
 NFS_LOCAL_NAME=backup
 
 # Name of backup directory for VMs residing on the NFS volume
-NFS_VM_BACKUP_DIR=mybackups 
+NFS_VM_BACKUP_DIR=.
 
 ############################
 ######### EMAIL ############
@@ -1165,7 +1165,7 @@ EMAIL_LOG_OUTPUT=/tmp/ghettoVCB-email-$$.log
 EMAIL_LOG_CONTENT=/tmp/ghettoVCB-email-$$.content
 
 #read user input
-while getopts ":af:c:g:l:d:e:" ARGS; do
+while getopts ":af:c:g:l:d:e:r:p:h:" ARGS; do
         case $ARGS in
 		a)
 			BACKUP_ALL_VMS=1
@@ -1192,6 +1192,17 @@ while getopts ":af:c:g:l:d:e:" ARGS; do
                 d)
                         LOG_LEVEL="${OPTARG}"
                         ;;
+		r)
+			VM_BACKUP_ROTATION_COUNT="${OPTARG}"
+			;;
+		p)
+			POWER_DOWN_TIMEOUT="${OPTARG}"
+			POWER_VM_DOWN_BEFORE_BACKUP=1
+			;;
+		h)
+			VM_FILE="/tmp/backup_all_vms_on-$(hostname)"
+			echo "${OPTARG}" > "${VM_FILE}"
+			;;
                 :)
                         echo "Option -${OPTARG} requires an argument."
                         exit 1
