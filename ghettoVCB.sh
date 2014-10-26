@@ -1346,56 +1346,7 @@ if [[ $# -lt 1 ]] || [[ $# -gt 12 ]]; then
 fi
 
 #read user input
-<<<<<<< HEAD
-while getopts ":af:c:g:l:d:e:r:p:h:" ARGS; do
-        case $ARGS in
-		a)
-			BACKUP_ALL_VMS=1
-			VM_FILE="/tmp/backup_all_vms_on-$(hostname)"
-			touch "${VM_FILE}"
-			;;			
-                f)      VM_FILE="${OPTARG}"
-                        ;;
-		e)
-			VM_EXCLUSION_FILE="${OPTARG}"
-			EXCLUDE_SOME_VMS=1
-			;;
-		c)
-			CONFIG_DIR="${OPTARG}"
-			USE_VM_CONF=1
-			;;
-		g)
-			GLOBAL_CONF="${OPTARG}"
-			USE_GLOBAL_CONF=1
-			;;
-                l)
-                        LOG_OUTPUT="${OPTARG}"
-                        ;;
-                d)
-                        LOG_LEVEL="${OPTARG}"
-                        ;;
-		r)
-			VM_BACKUP_ROTATION_COUNT="${OPTARG}"
-			;;
-		p)
-			POWER_DOWN_TIMEOUT="${OPTARG}"
-			POWER_VM_DOWN_BEFORE_BACKUP=1
-			;;
-		h)
-			VM_FILE="/tmp/backup_all_vms_on-$(hostname)"
-			echo "${OPTARG}" > "${VM_FILE}"
-			;;
-                :)
-                        echo "Option -${OPTARG} requires an argument."
-                        exit 1
-                        ;;
-                *)
-			printUsage
-                        exit 1
-                        ;;
-        esac
-=======
-while getopts ":af:c:g:w:m:l:d:e:" ARGS; do
+while getopts ":af:c:g:w:m:l:d:e:r:p:h:" ARGS; do
     case $ARGS in
         w)
             WORKDIR="${OPTARG}"
@@ -1429,6 +1380,17 @@ while getopts ":af:c:g:w:m:l:d:e:" ARGS; do
         d)
             LOG_LEVEL="${OPTARG}"
             ;;
+        r)
+            VM_BACKUP_ROTATION_COUNT="${OPTARG}"
+            ;;
+        p)
+            POWER_DOWN_TIMEOUT="${OPTARG}"
+            POWER_VM_DOWN_BEFORE_BACKUP=1
+            ;;
+        h)
+            VM_FILE="/tmp/backup_all_vms_on-$(hostname)"
+            echo "${OPTARG}" > "${VM_FILE}"
+            ;;
         :)
             echo "Option -${OPTARG} requires an argument."
             exit 1
@@ -1437,7 +1399,6 @@ while getopts ":af:c:g:w:m:l:d:e:" ARGS; do
             printUsage
             ;;
     esac
->>>>>>> 1d4a13df7b3b26d2534d6fce1c9265afdfbbbd58
 done
 
 WORKDIR=${WORKDIR:-"/tmp/ghettoVCB.work"}
